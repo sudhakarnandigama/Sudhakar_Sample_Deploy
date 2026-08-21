@@ -1,0 +1,12 @@
+# Maven build output
+target/
+
+# Runtime SQLite database files
+bookstore.db
+bookstore-test.db
+*.db-shm
+*.db-wal
+
+# IDE
+.idea/
+*.iml
