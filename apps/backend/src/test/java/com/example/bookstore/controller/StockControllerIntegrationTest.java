@@ -3,6 +3,7 @@ package com.example.bookstore.controller;
 import com.example.bookstore.entity.Book;
 import com.example.bookstore.entity.Genre;
 import com.example.bookstore.repository.BookRepository;
+import com.example.bookstore.repository.StockHistoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,14 @@ class StockControllerIntegrationTest {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private StockHistoryRepository stockHistoryRepository;
+
     private Book book;
 
     @BeforeEach
     void setUp() {
+        stockHistoryRepository.deleteAll();
         bookRepository.deleteAll();
         book = new Book();
         book.setTitle("Harry Potter and the Philosopher's Stone");
@@ -118,6 +123,49 @@ class StockControllerIntegrationTest {
         mockMvc.perform(patch("/api/books/999/stock/adjust")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"delta\":-1}"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404));
+    }
+
+    @Test
+    void getStockHistory_newBook_returnsEmptyArray() throws Exception {
+        mockMvc.perform(get("/api/books/" + book.getId() + "/stock/history"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    void adjustStock_thenHistoryRecordsAdjustEntry() throws Exception {
+        mockMvc.perform(patch("/api/books/" + book.getId() + "/stock/adjust")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"delta\":-5}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/books/" + book.getId() + "/stock/history"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].bookId").value(book.getId()))
+                .andExpect(jsonPath("$[0].changeType").value("ADJUST"))
+                .andExpect(jsonPath("$[0].previousLevel").value(12))
+                .andExpect(jsonPath("$[0].newLevel").value(7));
+    }
+
+    @Test
+    void setStock_thenHistoryRecordsSetEntry() throws Exception {
+        mockMvc.perform(put("/api/books/" + book.getId() + "/stock")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"stockLevel\":25}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/books/" + book.getId() + "/stock/history"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].changeType").value("SET"))
+                .andExpect(jsonPath("$[0].previousLevel").value(12))
+                .andExpect(jsonPath("$[0].newLevel").value(25));
+    }
+
+    @Test
+    void getStockHistory_unknownBook_returns404() throws Exception {
+        mockMvc.perform(get("/api/books/999/stock/history"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(404));
     }

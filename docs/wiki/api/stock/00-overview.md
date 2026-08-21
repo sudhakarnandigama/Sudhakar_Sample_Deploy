@@ -1,8 +1,8 @@
 # Stock resource
 
-> **Sources** — interview Q2, Q4; README.md §10.3
+> **Sources** — interview Q2, Q4; README.md §10.3; issue #4; [get-stock-history.md](get-stock-history.md)
 > **Status** — [spec]
-> **Page-size budget** — used 34 / 150 lines
+> **Page-size budget** — used 36 / 150 lines
 
 <a id="purpose"></a>
 ## Purpose
@@ -22,6 +22,7 @@ Stock level must never go below zero. Enforced in `apps/backend/src/main/java/co
 | GET | `/api/books/{id}/stock` | [get-stock.md](get-stock.md) |
 | PUT | `/api/books/{id}/stock` | [set-stock.md](set-stock.md) |
 | PATCH | `/api/books/{id}/stock/adjust` | [adjust-stock.md](adjust-stock.md) |
+| GET | `/api/books/{id}/stock/history` | [get-stock-history.md](get-stock-history.md) |
 
 <a id="verify"></a>
 ## Verify

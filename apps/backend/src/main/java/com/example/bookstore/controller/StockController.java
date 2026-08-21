@@ -1,6 +1,7 @@
 package com.example.bookstore.controller;
 
 import com.example.bookstore.dto.StockAdjustmentRequest;
+import com.example.bookstore.dto.StockHistoryResponse;
 import com.example.bookstore.dto.StockRequest;
 import com.example.bookstore.dto.StockResponse;
 import com.example.bookstore.service.StockService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/books/{bookId}/stock")
@@ -36,5 +39,10 @@ public class StockController {
     @PatchMapping("/adjust")
     public StockResponse adjustStock(@PathVariable Long bookId, @Valid @RequestBody StockAdjustmentRequest request) {
         return stockService.adjustStock(bookId, request.delta());
+    }
+
+    @GetMapping("/history")
+    public List<StockHistoryResponse> getStockHistory(@PathVariable Long bookId) {
+        return stockService.getStockHistory(bookId);
     }
 }

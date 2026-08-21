@@ -13,11 +13,12 @@ This index is a routing table. Find your task on the left; click the link on the
 |---|---|
 | Understand what the project does | [glossary.md](glossary.md#project) |
 | See the full data model | [data/00-overview.md](data/00-overview.md) |
-| Add/modify a database table | [data/author.md](data/author.md) · [data/book.md](data/book.md) · [data/book-author.md](data/book-author.md) |
+| Add/modify a database table | [data/author.md](data/author.md) · [data/book.md](data/book.md) · [data/book-author.md](data/book-author.md) · [data/stock-history.md](data/stock-history.md) |
 | Add an API endpoint | [api/00-overview.md](api/00-overview.md) |
 | Implement an author endpoint | [api/authors/00-overview.md](api/authors/00-overview.md) |
 | Implement a book endpoint | [api/books/00-overview.md](api/books/00-overview.md) |
 | Implement stock logic | [api/stock/00-overview.md](api/stock/00-overview.md) |
+| View stock history | [api/stock/get-stock-history.md](api/stock/get-stock-history.md) |
 | Check auth requirements | [auth/00-overview.md](auth/00-overview.md) |
 | Add an env var | [ops/env-vars.md](ops/env-vars.md) |
 | Run the app locally | [ops/runbooks/local-run.md](ops/runbooks/local-run.md) |
