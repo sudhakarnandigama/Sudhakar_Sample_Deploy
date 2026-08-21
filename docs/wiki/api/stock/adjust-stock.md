@@ -1,6 +1,6 @@
 # PATCH /api/books/{id}/stock/adjust — adjust stock by delta
 
-> **Sources** — interview Q4; [../../data/book.md#invariants](../../data/book.md#invariants); [00-overview.md#invariant](00-overview.md#invariant)
+> **Sources** — interview Q4; [../../data/book.md#invariants](../../data/book.md#invariants); [00-overview.md#invariant](00-overview.md#invariant); issue #6; [../../auth/00-overview.md](../../auth/00-overview.md)
 > **Status** — [spec]
 > **Page-size budget** — used 60 / 300 lines
 
@@ -12,7 +12,7 @@ Add a signed delta to a book's stock level. Negative deltas represent sales or w
 <a id="auth"></a>
 ## Auth
 
-None — public endpoint. See [../../auth/00-overview.md](../../auth/00-overview.md).
+Requires `X-API-Key` header — see [../../auth/00-overview.md](../../auth/00-overview.md).
 
 <a id="request"></a>
 ## Request

@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class StockControllerIntegrationTest {
 
+    private static final String API_KEY = "test-api-key";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -63,6 +65,7 @@ class StockControllerIntegrationTest {
     @Test
     void setStock_returnsNewLevel() throws Exception {
         mockMvc.perform(put("/api/books/" + book.getId() + "/stock")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"stockLevel\":25}"))
                 .andExpect(status().isOk())
@@ -72,6 +75,7 @@ class StockControllerIntegrationTest {
     @Test
     void setStock_negativeLevel_returns400() throws Exception {
         mockMvc.perform(put("/api/books/" + book.getId() + "/stock")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"stockLevel\":-1}"))
                 .andExpect(status().isBadRequest())
@@ -81,6 +85,7 @@ class StockControllerIntegrationTest {
     @Test
     void setStock_unknownBook_returns404() throws Exception {
         mockMvc.perform(put("/api/books/999/stock")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"stockLevel\":5}"))
                 .andExpect(status().isNotFound())
@@ -90,6 +95,7 @@ class StockControllerIntegrationTest {
     @Test
     void adjustStock_negativeDelta_returnsReducedLevel() throws Exception {
         mockMvc.perform(patch("/api/books/" + book.getId() + "/stock/adjust")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"delta\":-5}"))
                 .andExpect(status().isOk())
@@ -99,6 +105,7 @@ class StockControllerIntegrationTest {
     @Test
     void adjustStock_positiveDelta_returnsIncreasedLevel() throws Exception {
         mockMvc.perform(patch("/api/books/" + book.getId() + "/stock/adjust")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"delta\":10}"))
                 .andExpect(status().isOk())
@@ -108,6 +115,7 @@ class StockControllerIntegrationTest {
     @Test
     void adjustStock_belowZero_returns409AndLeavesStockUnchanged() throws Exception {
         mockMvc.perform(patch("/api/books/" + book.getId() + "/stock/adjust")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"delta\":-100}"))
                 .andExpect(status().isConflict())
@@ -121,6 +129,7 @@ class StockControllerIntegrationTest {
     @Test
     void adjustStock_unknownBook_returns404() throws Exception {
         mockMvc.perform(patch("/api/books/999/stock/adjust")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"delta\":-1}"))
                 .andExpect(status().isNotFound())
@@ -137,6 +146,7 @@ class StockControllerIntegrationTest {
     @Test
     void adjustStock_thenHistoryRecordsAdjustEntry() throws Exception {
         mockMvc.perform(patch("/api/books/" + book.getId() + "/stock/adjust")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"delta\":-5}"))
                 .andExpect(status().isOk());
@@ -152,6 +162,7 @@ class StockControllerIntegrationTest {
     @Test
     void setStock_thenHistoryRecordsSetEntry() throws Exception {
         mockMvc.perform(put("/api/books/" + book.getId() + "/stock")
+                        .header("X-API-Key", API_KEY)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"stockLevel\":25}"))
                 .andExpect(status().isOk());
