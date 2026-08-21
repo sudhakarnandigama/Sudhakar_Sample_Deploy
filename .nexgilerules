@@ -1,0 +1,32 @@
+# bookstore — operating rules for Nexgile Code
+
+## What this project is
+bookstore is a backend-only Spring Boot 3.2 REST service (Java 17) that manages book titles, authors, and stock levels. It persists to an embedded SQLite database via Spring Data JPA (Hibernate 6, SQLiteDialect). The API is a single deployable unit (`api`) with no authentication yet. See README.md for the narrative overview; docs/wiki/ is the implementable contract.
+
+## What you must read before starting any task
+
+| Task | Read |
+|---|---|
+| Adding/changing a DB table | `docs/wiki/data/<table>.md` |
+| Adding/changing an API endpoint | `docs/wiki/api/<resource>/<endpoint>.md` |
+| Adding/changing stock logic | `docs/wiki/api/stock/00-overview.md` + `docs/wiki/data/book.md#invariants` |
+| Adding a new env var | `docs/wiki/ops/env-vars.md` |
+| Running or inspecting the app locally | `docs/wiki/ops/runbooks/local-run.md` |
+| Writing tests or seed data | `docs/wiki/test/00-overview.md` + `docs/wiki/test/fixtures.md` |
+
+## Hard rules
+1. Never edit a wiki page without updating the `Sources` line.
+2. Never add a TODO, TBD, or FIXME without a `[GAP-XX-NN]` tracking ID.
+3. Every PR description cites the wiki section(s) it implements.
+4. If code disagrees with the wiki, update the wiki in the same PR or write `docs/sources/decisions/<date>-<slug>.md` explaining why.
+5. `docs/sources/` is append-only. `docs/log.md` is append-only.
+6. Never let a page exceed 300 lines. Split first.
+7. Never use vague verbs ("handles", "manages") in wiki content.
+8. Every cross-reference uses `path:line` or `page.md#anchor`. No prose links.
+9. Stock level must never go below zero — the invariant in `docs/wiki/data/book.md#invariants` is enforced in `apps/backend/src/main/java/com/example/bookstore/service/StockService.java` `[planned]`.
+
+## How to verify before claiming done
+Run the nine audits in §"Self-check" of the bootstrap workflow at `docs/sources/external/2026-08-21-spec-bootstrap.md`.
+
+## Phase tags
+v1 = current. v2 = planned (stock history, optimistic locking). Tag every roadmap-only feature with its phase. Default to `[current]`.
