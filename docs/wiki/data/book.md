@@ -1,8 +1,8 @@
 # Table: book
 
-> **Sources** — interview Q6; README.md §9, §12
+> **Sources** — interview Q6; README.md §9, §12; issue #5; `../sources/decisions/2026-08-21-007-optimistic-locking.md`
 > **Status** — [spec]
-> **Page-size budget** — used 84 / 300 lines
+> **Page-size budget** — used 88 / 300 lines
 
 <a id="purpose"></a>
 ## Purpose
@@ -13,7 +13,7 @@ One row per catalog title, including its current stock level.
 ## Schema
 
 ```sql
--- apps/backend/src/main/java/com/example/bookstore/entity/Book.java [planned]
+-- apps/backend/src/main/java/com/example/bookstore/entity/Book.java
 CREATE TABLE book (
   id               INTEGER PRIMARY KEY,
   title            TEXT    NOT NULL,
@@ -21,7 +21,8 @@ CREATE TABLE book (
   genre            TEXT    NOT NULL,
   publication_year INTEGER,
   price            NUMERIC,
-  stock_level      INTEGER NOT NULL DEFAULT 0
+  stock_level      INTEGER NOT NULL DEFAULT 0,
+  version          INTEGER NOT NULL DEFAULT 0
 );
 CREATE UNIQUE INDEX ux_book_isbn ON book(isbn);
 CREATE INDEX idx_book_title ON book(title);
@@ -39,6 +40,7 @@ CREATE INDEX idx_book_title ON book(title);
 | publication_year | INTEGER | yes | NULL | — | |
 | price | NUMERIC | yes | NULL | — | BigDecimal, non-negative |
 | stock_level | INTEGER | no | 0 | ≥ 0 | enforced in StockService |
+| version | INTEGER | no | 0 | — | `@Version` optimistic lock counter |
 
 <a id="invariants"></a>
 ## Invariants

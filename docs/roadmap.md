@@ -10,5 +10,5 @@ Wiki = current state. Roadmap = planned but not yet specced.
 
 ## Phase v2 (planned)
 - [x] Stock history / audit log table — status: done (issue #4)
-- [ ] `@Version` optimistic locking for concurrent stock updates — owner: unassigned, status: not-started
+- [x] `@Version` optimistic locking for concurrent stock updates — status: done (issue #5)
 - [ ] Authentication (blocked on decision — see [GAP-AUTH-01] in docs/wiki/auth/00-overview.md) — owner: unassigned, status: not-started

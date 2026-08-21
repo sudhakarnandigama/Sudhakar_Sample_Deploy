@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -42,6 +43,12 @@ public class Book {
 
     @Column(name = "stock_level", nullable = false)
     private int stockLevel;
+
+    // Optimistic concurrency control: Hibernate increments this on every
+    // update and rejects a stale write with an OptimisticLockException.
+    @Version
+    @Column(nullable = false)
+    private int version;
 
     // Owning side of the book<->author many-to-many association.
     // NOTE: no CascadeType.REMOVE here. Deleting an Author must NOT delete the
@@ -108,6 +115,14 @@ public class Book {
 
     public void setStockLevel(int stockLevel) {
         this.stockLevel = stockLevel;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public Set<Author> getAuthors() {

@@ -1,8 +1,8 @@
 # Stock resource
 
-> **Sources** — interview Q2, Q4; README.md §10.3; issue #4; [get-stock-history.md](get-stock-history.md)
+> **Sources** — interview Q2, Q4; README.md §10.3; issue #4; issue #5; [get-stock-history.md](get-stock-history.md); `../../sources/decisions/2026-08-21-007-optimistic-locking.md`
 > **Status** — [spec]
-> **Page-size budget** — used 36 / 150 lines
+> **Page-size budget** — used 42 / 150 lines
 
 <a id="purpose"></a>
 ## Purpose
@@ -12,7 +12,12 @@ Read and mutate `book.stock_level` — see [../../data/book.md#invariants](../..
 <a id="invariant"></a>
 ## Invariant
 
-Stock level must never go below zero. Enforced in `apps/backend/src/main/java/com/example/bookstore/service/StockService.java` `[planned]`.
+Stock level must never go below zero. Enforced in `apps/backend/src/main/java/com/example/bookstore/service/StockService.java`.
+
+<a id="concurrency"></a>
+## Concurrency
+
+`book` carries a `@Version` column. A stock mutation based on a stale read throws `OptimisticLockException`, which the global handler maps to 409 with retry guidance — see `../../sources/decisions/2026-08-21-007-optimistic-locking.md`. Clients must reload and retry on 409.
 
 <a id="endpoints"></a>
 ## Endpoints
