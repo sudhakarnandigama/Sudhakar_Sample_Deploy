@@ -1,8 +1,8 @@
 # API overview
 
-> **Sources** — interview Q4; README.md §10, §13
+> **Sources** — interview Q4; README.md §10, §13; issue #6; [../auth/00-overview.md](../auth/00-overview.md)
 > **Status** — [spec]
-> **Page-size budget** — used 64 / 200 lines
+> **Page-size budget** — used 65 / 200 lines
 
 <a id="base-url"></a>
 ## Base URL
@@ -16,8 +16,9 @@
 |---|---|---|
 | Content-Type | yes (when a body is sent) | `application/json` |
 | Accept | no | `application/json` |
+| X-API-Key | only on stock mutations | API key string |
 
-No authentication headers — every endpoint is public. See [../auth/00-overview.md](../auth/00-overview.md).
+Stock mutation endpoints require `X-API-Key`; every other endpoint is public. See [../auth/00-overview.md](../auth/00-overview.md).
 
 <a id="error-envelope"></a>
 ## Error envelope

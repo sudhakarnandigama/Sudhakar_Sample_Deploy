@@ -1,6 +1,6 @@
 # PUT /api/books/{id}/stock — set stock level
 
-> **Sources** — interview Q4; [../../data/book.md#invariants](../../data/book.md#invariants)
+> **Sources** — interview Q4; [../../data/book.md#invariants](../../data/book.md#invariants); issue #6; [../../auth/00-overview.md](../../auth/00-overview.md)
 > **Status** — [spec]
 > **Page-size budget** — used 46 / 300 lines
 
@@ -12,7 +12,7 @@ Set the absolute stock level of one book.
 <a id="auth"></a>
 ## Auth
 
-None — public endpoint. See [../../auth/00-overview.md](../../auth/00-overview.md).
+Requires `X-API-Key` header — see [../../auth/00-overview.md](../../auth/00-overview.md).
 
 <a id="request"></a>
 ## Request
