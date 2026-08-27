@@ -5,6 +5,7 @@ import com.example.bookstore.dto.StockHistoryResponse;
 import com.example.bookstore.dto.StockRequest;
 import com.example.bookstore.dto.StockResponse;
 import com.example.bookstore.service.StockService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,11 +33,13 @@ public class StockController {
     }
 
     @PutMapping
+    @SecurityRequirement(name = "ApiKeyAuth")
     public StockResponse setStock(@PathVariable Long bookId, @Valid @RequestBody StockRequest request) {
         return stockService.setStock(bookId, request.stockLevel());
     }
 
     @PatchMapping("/adjust")
+    @SecurityRequirement(name = "ApiKeyAuth")
     public StockResponse adjustStock(@PathVariable Long bookId, @Valid @RequestBody StockAdjustmentRequest request) {
         return stockService.adjustStock(bookId, request.delta());
     }
